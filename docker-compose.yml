@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+
+  react-app:
+    build: ./Client
+    ports:
+      - "3000:80"
+  customerservice:
+    build: ./Customer/Customer.Api
+    ports:
+      - "5002:5002"
+    depends_on:
+      - rabbitmq
+  
+  orderservice:
+    build: ./Order/Order
+    ports:
+      - "5001:5001"
+    depends_on:
+      - rabbitmq
+      
+  productservice:
+    build: ./Product/Product
+    ports:
+      - "5004:5004"
+    depends_on:
+      - rabbitmq
+      
+  paymentservice:
+    build: ./Payment/Payment
+    ports:
+      - "5003:5003"
+    depends_on:
+      - rabbitmq
+    
+  shippingservice:
+    build: ./Shipping/Shipping
+    ports:
+      - "5005:5005"
+    depends_on:
+      - rabbitmq
+
+  api-gateway:
+    build: ./Api.Gateway/Api.Gateway
+    ports:
+      - "5000:5000"
+    depends_on:
+      - customerservice
+      - orderservice
+      - productservice
+      - paymentservice
+      - shippingservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - type: bind
+        source: ./definitions.json
+        target: /etc/rabbitmq/definitions.json
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_LOAD_DEFINITIONS=/etc/rabbitmq/definitions.json
+    
+volumes:
+  rabbitmq:
+    driver: local

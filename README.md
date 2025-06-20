@@ -6,6 +6,7 @@ Projeto criado com o objetivo de exemplificar o funcionamento de um e-commerce u
 - MongoDB
 - Docker
 - RabbitMQ
+- SignalR
 - Node.js
 - React.js
 

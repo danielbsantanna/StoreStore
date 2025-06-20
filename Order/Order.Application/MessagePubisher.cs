@@ -5,14 +5,14 @@ using MassTransit;
 using MessageContracts;
 using Order.Application.Shared;
 using System.Net.WebSockets;
-using Order.Application;
+using Order.Application.Notification;
 
 public class MessagePublisher
 {
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
 
-    public MessagePublisher(IPublishEndpoint publishEndpoint, NotificationService notificationService)
+    public MessagePublisher(IPublishEndpoint publishEndpoint, INotificationService notificationService)
     {
         _publishEndpoint = publishEndpoint;
         _notificationService = notificationService;

@@ -27,8 +27,8 @@ const createOrder = async () => {
       created: "2025-06-10T15:30:00Z",
       totalValue: 260,
       items: [
-        { productId: "product_777", value: 120, quantity: 2 },
-        { productId: "product_888", value: 45, quantity: 3 },
+        { productId: "product_777", value: 120, quantity: 1 },
+        { productId: "product_888", value: 45, quantity: 1 },
         { productId: "product_999", value: 95, quantity: 1 }
       ],
       payment: {

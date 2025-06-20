@@ -3,6 +3,7 @@ using MessageContracts;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Order.Application;
+using Order.Application.Notification;
 using Order.Infrastructure;
 using System.Collections.Concurrent;
 using System.Net;
@@ -47,7 +48,7 @@ builder.Services.AddMassTransit(x =>
 
 builder.Services.AddSingleton<IPublishEndpoint>(provider => provider.GetRequiredService<IBus>());
 builder.Services.AddSingleton<MessagePublisher>();
-builder.Services.AddSingleton<NotificationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddTransient<OrderService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();

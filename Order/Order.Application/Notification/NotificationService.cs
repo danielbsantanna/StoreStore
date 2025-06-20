@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Order.Application
+namespace Order.Application.Notification
 {
 
-    public class NotificationService
+    public class NotificationService : INotificationService
     {
         private readonly IHubContext<NotificationHub> _hubContext;
 

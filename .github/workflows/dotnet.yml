@@ -96,17 +96,24 @@ jobs:
       matrix:
         include:
           - service: Order
+            folder: Order/Order
             image_name: order
           - service: Payment
+            folder: Payment/Payment
             image_name: payment
           - service: Customer
+            folder: Customer/Customer
             image_name: customer
           - service: Product
+            folder: Product/Product
             image_name: product
           - service: Shipping
+            folder: Shipping/Shipping
             image_name: shipping
           - service: API.Gateway
+            folder: API.Gateway/API.Gateway
             image_name: api.gateway
+
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v3
@@ -120,6 +127,6 @@ jobs:
 
       - name: 🐳 Build and Push ${{ matrix.service }} Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest ./${{ matrix.service }}
+          docker build -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest ./${{ matrix.folder }}
           docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest
 

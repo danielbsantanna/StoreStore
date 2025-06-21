@@ -8,7 +8,7 @@ RUN echo "📁 Inside /src:" && ls -la /src
 WORKDIR /src/Product
 
 # 🔍 Check contents of this working directory
-RUN echo "📁 Inside /src/Product:" && ls -la
+RUN echo "📁 Inside /src/Product/Product:" && ls -la
 
 RUN dotnet restore Product.csproj
 RUN dotnet publish Product.csproj -c Release -o /app/publish

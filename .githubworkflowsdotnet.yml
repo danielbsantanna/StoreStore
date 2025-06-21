@@ -27,10 +27,11 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build & Test ${{ matrix.solution }}
+        working-directory: ${{ dirname(matrix.solution) }}
         run: |
-          dotnet restore ${{ matrix.solution }}
-          dotnet build ${{ matrix.solution }} --no-restore
-          dotnet test ${{ matrix.solution }} --no-build --verbosity normal
+          dotnet restore ${{ basename(matrix.solution) }}
+          dotnet build ${{ basename(matrix.solution) }} --no-restore
+          dotnet test ${{ basename(matrix.solution) }} --no-build --verbosity normal
   react-build:
     runs-on: ubuntu-latest
     defaults:

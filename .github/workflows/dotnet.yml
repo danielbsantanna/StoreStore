@@ -120,8 +120,9 @@ jobs:
             echo "📍 Current directory root idk: $(pwd)"
             echo "📂 Files in current directory root idk:"
             ls -la
+            
       - name: 🔎 Inspect ${{ matrix.folder }}
-          run: |
+        run: |
             echo "📍 Inspecting ./${{ matrix.folder }}:"
             ls -la ./${{ matrix.folder }}
 

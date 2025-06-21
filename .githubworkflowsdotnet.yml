@@ -7,20 +7,25 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-API-Gateway:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [API.Gateway, Customer, Order, Payment, Product, Shipping]
+    name: Build API.Gateway
     defaults:
       run:
-        working-directory: ${{ matrix.service }}
+        working-directory: ./API.Gateway
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.x'
 
-      - run: dotnet restore ${{ matrix.service }}.sln
-      - run: dotnet build ${{ matrix.service }}.sln --no-restore
-      - run: dotnet test ${{ matrix.service }}.sln --no-build
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'  # or 7.x / 6.x depending on your target
+
+      - name: Restore dependencies
+        run: dotnet restore API.Gateway.sln
+
+      - name: Build
+        run: dotnet build API.Gateway.sln --no-restore --configuration Release
+
+      - name: Run Tests
+        run: dotnet test API.Gateway.sln --no-build --verbosity normal

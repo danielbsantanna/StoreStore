@@ -11,4 +11,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app/publish .
 EXPOSE 5005
-ENTRYPOINT ["dotnet", "Shipping.Api.dll"]
+ENTRYPOINT ["dotnet", "Shipping.API.dll"]

@@ -62,7 +62,7 @@ jobs:
       - name: 🛠️ Build React app
         run: CI='' npm run build
 
-  docker-publish:
+  client-docker-publish:
     runs-on: ubuntu-latest
     needs: [react-build]
     permissions:

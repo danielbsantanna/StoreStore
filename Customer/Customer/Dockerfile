@@ -10,4 +10,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 EXPOSE 5002
-ENTRYPOINT ["dotnet", "Customer.API.dll"]
+ENTRYPOINT ["dotnet", "Customer.Api.dll"]

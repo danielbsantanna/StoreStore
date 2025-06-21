@@ -121,7 +121,7 @@ jobs:
             echo "📂 Files in current directory root idk:"
             ls -la
       - name: 🔎 Inspect ${{ matrix.service }}
-          run: |
+        run: |
             echo "📍 Inspecting ./${{ matrix.service }}:"
             ls -la ./${{ matrix.service }}
 

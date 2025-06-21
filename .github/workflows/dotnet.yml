@@ -105,7 +105,7 @@ jobs:
             folder: Customer/Customer
             image_name: customer
           - service: Product
-            folder: Product/Product
+            folder: Product
             image_name: product
           - service: Shipping
             folder: Shipping/Shipping

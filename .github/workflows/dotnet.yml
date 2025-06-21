@@ -146,6 +146,5 @@ jobs:
           -f ./${{ matrix.folder }}/Dockerfile \
           -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest \
           ./${{ matrix.folder }}
-
           docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest
 

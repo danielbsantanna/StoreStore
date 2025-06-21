@@ -11,6 +11,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app/publish .
 
-EXPOSE 5010
-ENTRYPOINT ["dotnet", "MINHAPIKA.dll"]
+EXPOSE 5005
+ENTRYPOINT ["dotnet", "Shipping.API.dll"]
 

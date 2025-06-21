@@ -10,6 +10,8 @@ Projeto criado com o objetivo de exemplificar o funcionamento de um e-commerce u
 - Node.js
 - React.js
 
+- 
+
 ## Install
 
 A instalação deve ser feita através do docker utilizado os seguinte comando:

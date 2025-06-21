@@ -117,9 +117,14 @@ jobs:
     steps:
       - name: 🕵️ Log current path and files
         run: |
-            echo "📍 Current directory: $(pwd)"
-            echo "📂 Files in current directory:"
+            echo "📍 Current directory root idk: $(pwd)"
+            echo "📂 Files in current directory root idk:"
             ls -la
+      - name: 🔎 Inspect ${{ matrix.folder }}
+          run: |
+            echo "📍 Inspecting ./${{ matrix.folder }}:"
+            ls -la ./${{ matrix.folder }}
+
 
       - name: 📥 Checkout repo
         uses: actions/checkout@v3
@@ -132,7 +137,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🐳 Build and Push ${{ matrix.service }} Docker image
-        run: |
+        run: |         
           docker build -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest ./${{ matrix.folder }}
           docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest
 

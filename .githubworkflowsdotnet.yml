@@ -7,61 +7,20 @@ on:
     branches: [ main ]
 
 jobs:
-  dotnet-build:
+  build:
     runs-on: ubuntu-latest
-
-    steps:
-      - id: read_projects
-        name: Read Projects
-        uses: Stockopedia/action-run-on-list@v1
-        with:
-          list: ${{ steps.detect_changes.outputs.projects }}
-          command: |
-            echo "detected changes in $item" 
-            # doing >> $GITHUB_ENV doesn't work here ☹️
-            # if more than one project level change is detected, the output will be the last one here 😬
-            echo "::set-output name=output1::$item" 
-
-      - id: update_variables
-        name: Update Variables
-        run: echo PROJECT_NAME=${{ steps.read_projects.outputs.output1 }} >> $GITHUB_ENV
-
-      - id: eval_project_name
-        name: Evaluate Project Name
-        run: |
-          # echo ${{steps.read_projects.outputs.output1}}
-          echo $PROJECT_NAME
-
-      - id: setup_dotnet
-        name: Setup .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 6.0.x
-
-      - id: restore_dependencies
-        name: Restore dependencies
-        run: dotnet restore "$PROJECT_NAME/$PROJECT_NAME.csproj"
-
-      - id: build_project
-        name: Build
-        run: dotnet build "$PROJECT_NAME/$PROJECT_NAME.csproj" --no-restore
-
-
-  react-build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [API.Gateway, Customer, Order, Payment, Product, Shipping]
     defaults:
       run:
-        working-directory: Client
+        working-directory: ${{ matrix.service }}
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          node-version: '20'
+          dotnet-version: '8.x'
 
-      - name: Install deps
-        run: npm install
-
-      - name: Run build
-        run: npm run build
+      - run: dotnet restore ${{ matrix.service }}.sln
+      - run: dotnet build ${{ matrix.service }}.sln --no-restore
+      - run: dotnet test ${{ matrix.service }}.sln --no-build

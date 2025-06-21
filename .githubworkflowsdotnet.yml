@@ -11,13 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        solution:
-          - API.Gateway/API.Gateway.sln
-          - Customer/Customer.sln
-          - Order/Order.sln
-          - Payment/Payment.sln
-          - Product/Product.sln
-          - Shipping/Shipping.sln
+        include:
+          - solutionPath: API.Gateway
+            solutionFile: API.Gateway.sln
+          - solutionPath: Customer
+            solutionFile: Customer.sln
+          - solutionPath: Order
+            solutionFile: Order.sln
+          - solutionPath: Payment
+            solutionFile: Payment.sln
+          - solutionPath: Product
+            solutionFile: Product.sln
+          - solutionPath: Shipping
+            solutionFile: Shipping.sln
     steps:
       - uses: actions/checkout@v3
 
@@ -26,12 +32,13 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build & Test ${{ matrix.solution }}
-        working-directory: ${{ dirname(matrix.solution) }}
-        run: |
-          dotnet restore ${{ basename(matrix.solution) }}
-          dotnet build ${{ basename(matrix.solution) }} --no-restore
-          dotnet test ${{ basename(matrix.solution) }} --no-build --verbosity normal
+      - name: Build & Test ${{ matrix.solutionFile }}
+          working-directory: ${{ matrix.solutionPath }}
+          run: |
+            dotnet restore ${{ matrix.solutionFile }}
+            dotnet build ${{ matrix.solutionFile }} --no-restore
+            dotnet test ${{ matrix.solutionFile }} --no-build --verbosity normal
+
   react-build:
     runs-on: ubuntu-latest
     defaults:

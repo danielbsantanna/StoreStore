@@ -96,19 +96,19 @@ jobs:
       matrix:
         include:
           - service: Order
-            folder: Order/Order
+            folder: Order
             image_name: order
           - service: Payment
-            folder: Payment/Payment
+            folder: Payment
             image_name: payment
           - service: Customer
-            folder: Customer/Customer
+            folder: Customer
             image_name: customer
           - service: Product
             folder: Product
             image_name: product
           - service: Shipping
-            folder: Shipping/Shipping
+            folder: Shipping
             image_name: shipping
           - service: API.Gateway
             folder: API.Gateway/API.Gateway
@@ -137,6 +137,6 @@ jobs:
 
       - name: 🐳 Build and Push ${{ matrix.service }} Docker image
         run: |         
-          docker build -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest ./${{ matrix.service }}
+          docker build -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest ./${{ matrix.folder }}
           docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:latest
 

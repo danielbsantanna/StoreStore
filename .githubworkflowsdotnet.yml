@@ -7,6 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
+    - name: 🔍 Log current path and contents
+      run: |
+        echo "📍 Current working directory: $(pwd)"
+        echo "📂 Contents:"
+        ls -la
+
   build-API-Gateway:
     runs-on: ubuntu-latest
     name: Build API.Gateway

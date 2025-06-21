@@ -1,4 +1,4 @@
-name: Build and Test .NET
+name: CI - Backend + Frontend
 
 on:
   push:
@@ -7,22 +7,57 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  dotnet-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - solutionPath: API.Gateway
+            solutionFile: API.Gateway.sln
+          - solutionPath: Customer
+            solutionFile: Customer.sln
+          - solutionPath: Order
+            solutionFile: Order.sln
+          - solutionPath: Payment
+            solutionFile: Payment.sln
+          - solutionPath: Product
+            solutionFile: Product.sln
+          - solutionPath: Shipping
+            solutionFile: Shipping.sln
 
     steps:
-    - uses: actions/checkout@v3
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      - name: 🛠️ Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: 🧪 Restore, Build & Test ${{ matrix.solutionFile }}
+        run: |
+          cd ${{ matrix.solutionPath }}
+          dotnet restore ${{ matrix.solutionFile }} --no-cache
+          dotnet build ${{ matrix.solutionFile }} --no-restore
+          dotnet test ${{ matrix.solutionFile }} --no-build --verbosity normal
 
-    - name: Build
-      run: dotnet build --no-restore
+  react-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Client
 
-    - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 💿 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🛠️ Build React app
+        run: npm run build

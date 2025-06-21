@@ -33,11 +33,12 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build & Test ${{ matrix.solutionFile }}
-          working-directory: ${{ matrix.solutionPath }}
           run: |
+            cd ${{ matrix.solutionPath }}
             dotnet restore ${{ matrix.solutionFile }}
             dotnet build ${{ matrix.solutionFile }} --no-restore
             dotnet test ${{ matrix.solutionFile }} --no-build --verbosity normal
+
 
   react-build:
     runs-on: ubuntu-latest

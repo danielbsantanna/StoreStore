@@ -94,14 +94,19 @@ jobs:
 
     strategy:
       matrix:
-        service:
-          - Order
-          - Payment
-          - Customer
-          - Product
-          - Shipping
-          - API.Gateway
-
+        include:
+          - service: Order
+            image_name: order
+          - service: Payment
+            image_name: payment
+          - service: Customer
+            image_name: customer
+          - service: Product
+            image_name: product
+          - service: Shipping
+            image_name: shipping
+          - service: API.Gateway
+            image_name: api.gateway
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v3

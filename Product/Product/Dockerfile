@@ -1,13 +1,12 @@
-# Stage 1: Build and publish
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY . .
+WORKDIR /src/Product.Api
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish
 
-# Stage 2: Runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app/publish .
 EXPOSE 5004
-ENTRYPOINT ["dotnet", "Product.API.dll"]
+ENTRYPOINT ["dotnet", "Product.Api.dll"]

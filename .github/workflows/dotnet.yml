@@ -115,6 +115,12 @@ jobs:
             image_name: api.gateway
 
     steps:
+      - name: 🕵️ Log current path and files
+        run: |
+            echo "📍 Current directory: $(pwd)"
+            echo "📂 Files in current directory:"
+            ls -la
+
       - name: 📥 Checkout repo
         uses: actions/checkout@v3
 

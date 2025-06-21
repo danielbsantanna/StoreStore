@@ -95,18 +95,12 @@ jobs:
     strategy:
       matrix:
         service:
-          - service: Order
-            image_name: order
-          - service: Payment
-            image_name: payment
-          - service: Customer
-            image_name: customer
-          - service: Product
-            image_name: product
-          - service: Shipping
-            image_name: shipping
-          - service: API.Gateway
-            image_name: api.gateway
+          - Order
+          - Payment
+          - Customer
+          - Product
+          - Shipping
+          - API.Gateway
 
     steps:
       - name: 📥 Checkout repo

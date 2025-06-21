@@ -85,3 +85,35 @@ jobs:
           docker build -t ghcr.io/${{ github.repository_owner }}/store-client:latest ./Client
           docker push ghcr.io/${{ github.repository_owner }}/store-client:latest
 
+  backend-docker-publish:
+    runs-on: ubuntu-latest
+    needs: [dotnet-build]
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        service:
+          - Order
+          - Payment
+          - Customer
+          - Product
+          - Shipping
+          - API.Gateway
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔐 Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐳 Build and Push ${{ matrix.service }} Docker image
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/${{ matrix.service | toLower }}:latest ./${{ matrix.service }}
+          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.service | toLower }}:latest

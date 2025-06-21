@@ -5,13 +5,13 @@ COPY . .
 # 🔍 Sanity check: what's inside /src?
 RUN echo "📁 Inside /src:" && ls -la /src
 
-WORKDIR /src/Product
+WORKDIR /src
 
 # 🔍 Check contents of this working directory
 RUN echo "📁 Inside /src/Product/Product:" && ls -la
 
-RUN dotnet restore Product.csproj
-RUN dotnet publish Product.csproj -c Release -o /app/publish
+RUN dotnet restore Product/Product.csproj
+RUN dotnet publish Product/Product.csproj -c Release -o /app/publish
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0

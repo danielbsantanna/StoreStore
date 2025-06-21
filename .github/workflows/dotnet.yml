@@ -120,11 +120,10 @@ jobs:
             echo "📍 Current directory root idk: $(pwd)"
             echo "📂 Files in current directory root idk:"
             ls -la
-      - name: 🔎 Inspect ${{ matrix.folder }}
+      - name: 🔎 Inspect ${{ matrix.service }}
           run: |
-            echo "📍 Inspecting ./${{ matrix.folder }}:"
-            ls -la ./${{ matrix.folder }}
-
+            echo "📍 Inspecting ./${{ matrix.service }}:"
+            ls -la ./${{ matrix.service }}
 
       - name: 📥 Checkout repo
         uses: actions/checkout@v3

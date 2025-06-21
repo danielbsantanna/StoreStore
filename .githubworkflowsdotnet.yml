@@ -9,35 +9,42 @@ on:
 jobs:
   dotnet-build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - solutionPath: API.Gateway
-            solutionFile: API.Gateway.sln
-          - solutionPath: Customer
-            solutionFile: Customer.sln
-          - solutionPath: Order
-            solutionFile: Order.sln
-          - solutionPath: Payment
-            solutionFile: Payment.sln
-          - solutionPath: Product
-            solutionFile: Product.sln
-          - solutionPath: Shipping
-            solutionFile: Shipping.sln
+
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - id: read_projects
+        name: Read Projects
+        uses: Stockopedia/action-run-on-list@v1
         with:
-          dotnet-version: '8.0.x'
+          list: ${{ steps.detect_changes.outputs.projects }}
+          command: |
+            echo "detected changes in $item" 
+            # doing >> $GITHUB_ENV doesn't work here ☹️
+            # if more than one project level change is detected, the output will be the last one here 😬
+            echo "::set-output name=output1::$item" 
 
-      - name: Build & Test ${{ matrix.solutionFile }}
-          run: |
-            cd ${{ matrix.solutionPath }}
-            dotnet restore ${{ matrix.solutionFile }}
-            dotnet build ${{ matrix.solutionFile }} --no-restore
-            dotnet test ${{ matrix.solutionFile }} --no-build --verbosity normal
+      - id: update_variables
+        name: Update Variables
+        run: echo PROJECT_NAME=${{ steps.read_projects.outputs.output1 }} >> $GITHUB_ENV
+
+      - id: eval_project_name
+        name: Evaluate Project Name
+        run: |
+          # echo ${{steps.read_projects.outputs.output1}}
+          echo $PROJECT_NAME
+
+      - id: setup_dotnet
+        name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+
+      - id: restore_dependencies
+        name: Restore dependencies
+        run: dotnet restore "$PROJECT_NAME/$PROJECT_NAME.csproj"
+
+      - id: build_project
+        name: Build
+        run: dotnet build "$PROJECT_NAME/$PROJECT_NAME.csproj" --no-restore
 
 
   react-build:

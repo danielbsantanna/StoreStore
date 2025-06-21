@@ -5,11 +5,10 @@ COPY . .
 WORKDIR /src/Order
 
 RUN dotnet restore Order.API.csproj
-RUN dotnet publish Order.API.csproj -c Release -o /app/publish
+RUN dotnet publish Order.API.csproj -c Release && find . | grep Order.API.dll
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app/publish .
 EXPOSE 5001
-RUN echo "🗂 Published files:" && ls -la /app
 ENTRYPOINT ["dotnet", "Order.API.dll"]

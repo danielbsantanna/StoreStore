@@ -1,0 +1,51 @@
+name: CI - Backend + Frontend
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  dotnet-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        solution:
+          - API.Gateway/API.Gateway.sln
+          - Customer/Customer.sln
+          - Order/Order.sln
+          - Payment/Payment.sln
+          - Product/Product.sln
+          - Shipping/Shipping.sln
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build & Test ${{ matrix.solution }}
+        run: |
+          dotnet restore ${{ matrix.solution }}
+          dotnet build ${{ matrix.solution }} --no-restore
+          dotnet test ${{ matrix.solution }} --no-build --verbosity normal
+  react-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Client
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run build
+        run: npm run build

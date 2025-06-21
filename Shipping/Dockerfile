@@ -12,5 +12,5 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 EXPOSE 5005
-ENTRYPOINT ["dotnet", "BRUH.dll"]
+ENTRYPOINT ["dotnet", "Shipping.API.dll"]
 

@@ -3,11 +3,14 @@ WORKDIR /src
 COPY . .
 
 WORKDIR /src/Order
+
 RUN dotnet restore Order.API.csproj
-RUN dotnet publish Order.API.csproj -c Release
+RUN dotnet publish Order.API.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=build /src/Order/bin/Release/net9.0/publish .
-EXPOSE 5001
+COPY --from=build /app/publish .
+
+EXPOSE 5005
 ENTRYPOINT ["dotnet", "Order.API.dll"]
+

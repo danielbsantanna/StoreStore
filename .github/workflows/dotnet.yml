@@ -123,10 +123,10 @@ jobs:
             echo "📍 Current directory root idk: $(pwd)"
             echo "📂 Files in current directory root idk:"
             ls -la
-      - name: 🔎 Inspect ${{ matrix.service }}
+      - name: 🔎 Inspect ${{ matrix.folder }}
         run: |
-            echo "📍 Inspecting ./${{ matrix.service }}:"
-            ls -la ./${{ matrix.service }}
+            echo "📍 Inspecting ./${{ matrix.folder }}:"
+            ls -la ./${{ matrix.folder }}
 
       - name: 🔐 Login to GHCR
         uses: docker/login-action@v3

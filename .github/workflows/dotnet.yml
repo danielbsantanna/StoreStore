@@ -159,5 +159,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin
           git checkout main
-          git merge --no-ff origin/develop -m "Auto-merge from develop"
+          git merge --allow-unrelated-histories --no-ff origin/develop -m "Auto-merge from develop"
           git push origin main

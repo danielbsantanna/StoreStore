@@ -148,22 +148,23 @@ jobs:
           ./${{ matrix.folder }}
           docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release
   create-pr:
-    needs: backend-docker-publish
-    if: success()
+    name: 📬 Auto PR from develop to main
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
 
     steps:
-      - name: Checkout repo
+      - name: 🧾 Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Create PR from develop to main
+      - name: 📬 Create PR from develop to main
         uses: repo-sync/pull-request@v2
         with:
-          destination_branch: main
           source_branch: develop
+          destination_branch: main
           pr_title: "Auto PR: Sync develop into main"
           pr_body: |
-            🤖 This PR was automatically generated after the pipeline succeeded on `develop`.
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+            🤖 This pull request was automatically created by GitHub Actions.
+            Let's keep `main` up-to-date!
+          github_token: ${{ secrets.PAT_FOR_PR }}

@@ -6,35 +6,35 @@ services:
     ports:
       - "3000:80"
   customerservice:
-    build: ./Customer/Customer.Api
+    build: ./Customer
     ports:
       - "5002:5002"
     depends_on:
       - rabbitmq
   
   orderservice:
-    build: ./Order/Order
+    build: ./Order
     ports:
       - "5001:5001"
     depends_on:
       - rabbitmq
       
   productservice:
-    build: ./Product/Product
+    build: ./Product
     ports:
       - "5004:5004"
     depends_on:
       - rabbitmq
       
   paymentservice:
-    build: ./Payment/Payment
+    build: ./Payment
     ports:
       - "5003:5003"
     depends_on:
       - rabbitmq
     
   shippingservice:
-    build: ./Shipping/Shipping
+    build: ./Shipping
     ports:
       - "5005:5005"
     depends_on:

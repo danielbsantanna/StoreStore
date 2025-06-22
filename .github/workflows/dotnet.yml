@@ -2,9 +2,9 @@ name: CI - Backend + Frontend
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   dotnet-build:
@@ -82,8 +82,8 @@ jobs:
 
       - name: 🐳 Build and push Docker image (React client)
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/store-client:latest ./Client
-          docker push ghcr.io/${{ github.repository_owner }}/store-client:latest
+          docker build -t ghcr.io/${{ github.repository_owner }}/store-client:release ./Client
+          docker push ghcr.io/${{ github.repository_owner }}/store-client:release
 
   backend-docker-publish:
     runs-on: ubuntu-latest
@@ -144,7 +144,27 @@ jobs:
           docker build \
           --no-cache \
           -f ./${{ matrix.folder }}/Dockerfile \
-          -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:force \
+          -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release \
           ./${{ matrix.folder }}
-          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:force
+          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release
+  create-pr:
+    name: 📬 Auto PR from develop to main
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
 
+    steps:
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📬 Create PR from develop to main
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: develop
+          destination_branch: main
+          pr_title: "Auto PR: Sync develop into main"
+          pr_body: |
+            🤖 This pull request was automatically created by GitHub Actions.
+            Let's keep `main` up-to-date!
+          github_token: ${{ secrets.PAT_FOR_PR }}

@@ -147,15 +147,13 @@ jobs:
           -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release \
           ./${{ matrix.folder }}
           docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release
-  merge-into-main:
+  merge-on-success:
     runs-on: ubuntu-latest
-    needs: [dotnet-build]
-    permissions:
-      contents: read
-      packages: write
     steps:
-      - name: ⬆️ Merge to main on success
-        if: success()
+      - name: 🧾 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🔀 Auto-merge develop → main
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"

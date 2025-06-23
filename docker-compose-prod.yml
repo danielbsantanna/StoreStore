@@ -2,46 +2,46 @@ version: '3.8'
 services:
 
   react-app:
-    image: ghcr.io/danielbsantanna/store-client:latest
+    image: ghcr.io/danielbsantanna/store-client:release
     ports:
       - "3000:80"
   customerservice:
-    image: ghcr.io/danielbsantanna/customer:latest
+    image: ghcr.io/danielbsantanna/customer:release
     ports:
       - "5002:5002"
     depends_on:
       - rabbitmq
   
   orderservice:
-    image: ghcr.io/danielbsantanna/order:latest
+    image: ghcr.io/danielbsantanna/order:release
     ports:
       - "5001:5001"
     depends_on:
       - rabbitmq
       
   productservice:
-    image: ghcr.io/danielbsantanna/product:latest
+    image: ghcr.io/danielbsantanna/product:release
     ports:
       - "5004:5004"
     depends_on:
       - rabbitmq
       
   paymentservice:
-    image: ghcr.io/danielbsantanna/payment:latest
+    image: ghcr.io/danielbsantanna/payment:release
     ports:
       - "5003:5003"
     depends_on:
       - rabbitmq
     
   shippingservice:
-    image: ghcr.io/danielbsantanna/shipping:latest
+    image: ghcr.io/danielbsantanna/shipping:release
     ports:
       - "5005:5005"
     depends_on:
       - rabbitmq
 
   api-gateway:
-    image: ghcr.io/danielbsantanna/api.gateway:latest
+    image: ghcr.io/danielbsantanna/api.gateway:release
     ports:
       - "5000:5000"
     depends_on:

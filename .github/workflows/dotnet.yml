@@ -82,8 +82,8 @@ jobs:
 
       - name: 🐳 Build and push Docker image (React client)
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/store-client:release ./Client
-          docker push ghcr.io/${{ github.repository_owner }}/store-client:release
+          docker build -t ghcr.io/${{ github.repository_owner }}/store-client:homolog ./Client
+          docker push ghcr.io/${{ github.repository_owner }}/store-client:homolog
 
   backend-docker-publish:
     runs-on: ubuntu-latest
@@ -134,9 +134,9 @@ jobs:
           docker build \
           --no-cache \
           -f ./${{ matrix.folder }}/Dockerfile \
-          -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release \
+          -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:homolog \
           ./${{ matrix.folder }}
-          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release
+          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:homolog
   create-pr:
     name: 📬 Auto PR from develop to main
     runs-on: ubuntu-latest

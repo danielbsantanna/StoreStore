@@ -1,5 +1,5 @@
-#🛒 StoreStore E-Commerce
-##⚡ Overview
+# 🛒 StoreStore E-Commerce
+## ⚡ Overview
 This is a microservices-based project that simulates a complete e-commerce environment. Each core business domain is implemented as an independent service, communicating with one another via asynchronous messaging. The architecture is orchestrated through an API Gateway using YARP, which centralizes routing and exposes Swagger/ReDoc documentation for all services. The project uses Docker Compose for orchestration, making it easy to run all services locally with a single command.
 
 ## 🧱 Architecture
@@ -29,7 +29,7 @@ This is a microservices-based project that simulates a complete e-commerce envir
 - Frontend receives real-time updates on order/payment status
 
 
-##🖥️ Tech Stack
+## 🖥️ Tech Stack
 
 | Layer            | Tech                                |
 |------------------|-------------------------------------|
@@ -60,7 +60,7 @@ This is a microservices-based project that simulates a complete e-commerce envir
 5. **Code Review and Merge**  
    Once approved, the PR will be merged into the main branch and production builds will be created.
 
-##🧪 Install
+## 🧪 Install
 After cloning the repository you can choose which version you will run
 
 ### Local build
@@ -80,13 +80,13 @@ After cloning the repository you can choose which version you will run
 
 After that you acess the GUI: `http://localhost:3000`
 
-##🧾 Final Result
+## 🧾 Final Result
 <div align="center">
   <img src="https://github.com/danielbsantanna/StoreStore/blob/main/OrderPanel.png" alt="Panel" width="50%" />
   <br>
 </div>
 ---
-✅ Roadmap / TODO
+## ✅ Roadmap / TODO
 [ ] Deploy on the pipeline
 
 [ ] Full centralized documentation
@@ -98,7 +98,7 @@ After that you acess the GUI: `http://localhost:3000`
 [ ] Authentication
 
 ---
-##👤 Author
+## 👤 Author
 Daniel Becker Sant'Anna
 
 [E-mail](danielbsantanna@gmail.com)

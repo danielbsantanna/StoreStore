@@ -1,6 +1,7 @@
 using MassTransit;
 using MessageContracts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Order.Application;
 using Order.Application.Notification;
@@ -23,6 +24,16 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();
     return client.GetDatabase("store");
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API DOCS",
+        Version = "v1"
+    });
 });
 
 
@@ -48,20 +59,13 @@ builder.Services.AddMassTransit(x =>
 
 builder.Services.AddSingleton<IPublishEndpoint>(provider => provider.GetRequiredService<IBus>());
 builder.Services.AddSingleton<MessagePublisher>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddSingleton<INotificationService, NotificationService>();
 
 builder.Services.AddTransient<OrderService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddSignalR();
 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowAllOrigins",
-//        policy => policy.AllowAnyOrigin()
-//                        .AllowAnyMethod()
-//                        .AllowAnyHeader());
-//});
 
 builder.Services.AddCors(options =>
 {
@@ -84,18 +88,19 @@ app.UseCors("AllowAllOrigins");
 
 app.MapHub<NotificationHub>("/notifications").RequireCors("AllowFrontend");
 
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
+app.MapOpenApi();
 app.UseWebSockets();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseReDoc(c =>
+{
+    c.DocumentTitle = "API Documentation";
+    c.SpecUrl = "/swagger/v1/swagger.json";
+});
+app.UseStaticFiles();
 
 await app.RunAsync();

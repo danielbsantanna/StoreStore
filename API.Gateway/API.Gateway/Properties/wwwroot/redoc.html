@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Docs</title>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+    <style>
+      body { margin: 0; padding: 0; font-family: sans-serif; }
+      .nav { padding: 1em; background: #eee; display: flex; gap: 1em; }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <a href="?spec=/order/swagger/v1/swagger.json">Order</a>
+	  <a href="?spec=/customer/swagger/v1/swagger.json">Customer</a>
+      <a href="?spec=/product/swagger/v1/swagger.json">Product</a>
+	  <a href="?spec=/payment/swagger/v1/swagger.json">Payment</a>
+	  <a href="?spec=/shipping/swagger/v1/swagger.json">Shipping</a>	  
+    </div>
+    <redoc id="redoc-container" spec-url=""></redoc>
+    <script>
+      const specUrl = new URLSearchParams(window.location.search).get("spec") || "/order/swagger/v1/swagger.json";
+      document.querySelector("redoc").setAttribute("spec-url", specUrl);
+    </script>
+  </body>
+</html>

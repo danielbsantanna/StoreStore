@@ -1,16 +1,25 @@
 using Customer.Application;
 using Customer.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-
 builder.WebHost.UseUrls("http://*:5002");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API DOCS",
+        Version = "v1"
+    });
+});
+
 
 #region Dependency Injection 
 
@@ -33,33 +42,19 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-
-app.UseAuthorization();
-
+app.MapOpenApi();
+app.UseWebSockets();
 app.UseHttpsRedirection();
-app.UseRouting();
-app.UseEndpoints(endpoints =>
+app.UseAuthorization();
+app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseReDoc(c =>
 {
-    endpoints.MapControllers();
+    c.DocumentTitle = "API Documentation";
+    c.SpecUrl = "/swagger/v1/swagger.json";
 });
-
-
-
-
-#region Manual Testing
-
-var serviceProvider = builder.Services.BuildServiceProvider();
-var customerRepository = serviceProvider.GetRequiredService<ICustomerRepository>();
-var customers = await customerRepository.GetAllAsync();
-
-
-#endregion
-
+app.UseStaticFiles();
 
 app.Run();

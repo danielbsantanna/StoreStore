@@ -3,16 +3,13 @@ using Payment.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using MassTransit;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-
-
-builder.WebHost.UseUrls("http://*:5003");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.WebHost.UseUrls("http://*:5003");
 
 
 #region Dependency Injection 
@@ -22,6 +19,16 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();
     return client.GetDatabase("store");
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API DOCS",
+        Version = "v1"
+    });
 });
 
 builder.Services.AddMassTransit(x =>
@@ -52,28 +59,17 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
+app.MapOpenApi();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
-
-
-#region Manual Testing
-
-//var serviceProvider = builder.Services.BuildServiceProvider();
-//var repo = serviceProvider.GetRequiredService<IPaymentRepository>();
-//var result = await repo.GetAllAsync();
-
-
-#endregion
-
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseReDoc(c =>
+{
+    c.DocumentTitle = "API Documentation";
+    c.SpecUrl = "/swagger/v1/swagger.json";
+});
+app.UseStaticFiles();
 
 app.Run();

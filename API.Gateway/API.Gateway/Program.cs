@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 
 builder.WebHost.UseUrls("http://*:5000");
@@ -7,6 +7,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
@@ -19,15 +21,41 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins"); 
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
+app.MapOpenApi();
 app.UseAuthorization();
 app.MapControllers();
-app.MapReverseProxy(); 
+app.MapReverseProxy();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseReDoc(c =>
+{
+    c.DocumentTitle = "API Documentation";
+    c.SpecUrl = "/swagger/v1/swagger.json";
+});
+app.UseStaticFiles();
+app.UseRouting();
+
+//app.MapGet("/docs", async context =>
+//{
+//    const string html = """
+//    <!DOCTYPE html>
+//    <html>
+//      <head>
+//        <title>API Docs</title>
+//        <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+//      </head>
+//      <body>
+//        <redoc spec-url="http://localhost:5001/swagger/v1/swagger.json"></redoc>
+//      </body>
+//    </html>
+//    """;
+
+//    context.Response.ContentType = "text/html";
+//    await context.Response.WriteAsync(html);
+//});
+
+
 
 
 app.Run();

@@ -6,20 +6,20 @@ This is a microservices-based project that simulates a complete e-commerce envir
 
 
 
-											   [ React App ]
-												     │
-												     ▼
-											  [ API Gateway ]
-												     │
+					      [ React App ]
+						     │
+						     ▼
+					      [ API Gateway ]
+						     │
           ┌─────────────────────┬────────────────────┼───────────────────┬────────────────────┐
           ▼                     ▼                    ▼                   ▼                    ▼
     [ Order Service ] [ Customer Service  ]	[ Payment Service ] [ Product Service ]  [ Shipping Service ]
           │                     │                    │                   │                    │
           ├─────────────────────┴────────────────────┴───────────────────┴────────────────────┘
-												   │    ▲
-												   ▼    │
-												[ RabbitMQ ]
-                                                        
+						   │    ▲
+						   ▼    │
+						[ RabbitMQ ]
+	
 
 
 
@@ -85,7 +85,7 @@ After that you acess the GUI: `http://localhost:3000`
   <img src="https://github.com/danielbsantanna/StoreStore/blob/main/OrderPanel.png" alt="Panel" width="50%" />
   <br>
 </div>
----
+
 ## ✅ Roadmap / TODO
 [ ] Deploy on the pipeline
 
@@ -97,7 +97,6 @@ After that you acess the GUI: `http://localhost:3000`
 
 [ ] Authentication
 
----
 ## 👤 Author
 Daniel Becker Sant'Anna
 

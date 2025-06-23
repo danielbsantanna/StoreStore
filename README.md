@@ -70,7 +70,7 @@ After cloning the repository you can choose which version you will run
 
 ### Homolog build (Waiting for aprove)
 ```
-    docker-compose -f docker-compose-dev.yml up
+    docker-compose -f docker-compose-homolog.yml up
 ```
 
 ### Production build (Latests Release)

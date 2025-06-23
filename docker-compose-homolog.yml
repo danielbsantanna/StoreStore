@@ -1,0 +1,70 @@
+version: '3.8'
+services:
+
+  react-app:
+    image: ghcr.io/danielbsantanna/store-client:homolog
+    ports:
+      - "3000:80"
+  customerservice:
+    image: ghcr.io/danielbsantanna/customer:homolog
+    ports:
+      - "5002:5002"
+    depends_on:
+      - rabbitmq
+  
+  orderservice:
+    image: ghcr.io/danielbsantanna/order:homolog
+    ports:
+      - "5001:5001"
+    depends_on:
+      - rabbitmq
+      
+  productservice:
+    image: ghcr.io/danielbsantanna/product:homolog
+    ports:
+      - "5004:5004"
+    depends_on:
+      - rabbitmq
+      
+  paymentservice:
+    image: ghcr.io/danielbsantanna/payment:homolog
+    ports:
+      - "5003:5003"
+    depends_on:
+      - rabbitmq
+    
+  shippingservice:
+    image: ghcr.io/danielbsantanna/shipping:homolog
+    ports:
+      - "5005:5005"
+    depends_on:
+      - rabbitmq
+
+  api-gateway:
+    image: ghcr.io/danielbsantanna/api.gateway:homolog
+    ports:
+      - "5000:5000"
+    depends_on:
+      - customerservice
+      - orderservice
+      - productservice
+      - paymentservice
+      - shippingservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./definitions.json:/etc/rabbitmq/definitions.json
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/etc/rabbitmq/definitions.json"
+    
+volumes:
+  rabbitmq:
+    driver: local

@@ -6,19 +6,19 @@ This is a microservices-based project that simulates a complete e-commerce envir
 
 
 
-							      [ React App ]
-								     │
-								     ▼
-							      [ API Gateway ]
-								     │
-			  ┌─────────────────────┬────────────────────┼───────────────────┬────────────────────┐
-			  ▼                     ▼                    ▼                   ▼                    ▼
-		    [ Order Service ] [ Customer Service  ]	[ Payment Service ] [ Product Service ]  [ Shipping Service ]
-			  │                     │                    │                   │                    │
-			  ├─────────────────────┴────────────────────┴───────────────────┴────────────────────┘
-								   │    ▲
-								   ▼    │
-								[ RabbitMQ ]
+						      [ React App ]
+							     │
+							     ▼
+						      [ API Gateway ]
+							     │
+		  ┌─────────────────────┬────────────────────┼───────────────────┬────────────────────┐
+		  ▼                     ▼                    ▼                   ▼                    ▼
+	    [ Order Service ] [ Customer Service  ]	[ Payment Service ] [ Product Service ]  [ Shipping Service ]
+		  │                     │                    │                   │                    │
+		  ├─────────────────────┴────────────────────┴───────────────────┴────────────────────┘
+							   │    ▲
+							   ▼    │
+							[ RabbitMQ ]
 					
 
 

@@ -1,0 +1,83 @@
+name: Build and Push Image on Merge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  client-docker-publish:
+    runs-on: ubuntu-latest
+    needs: [react-build]
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔐 Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐳 Build and push Docker image (React client)
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/store-client:release ./Client
+          docker push ghcr.io/${{ github.repository_owner }}/store-client:release
+
+  backend-docker-publish:
+    runs-on: ubuntu-latest
+    needs: [dotnet-build]
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        include:
+          - service: Order
+            folder: Order
+            image_name: order
+          - service: Payment
+            folder: Payment
+            image_name: payment
+          - service: Customer
+            folder: Customer
+            image_name: customer
+          - service: Product
+            folder: Product
+            image_name: product
+          - service: Shipping
+            folder: Shipping
+            image_name: shipping
+          - service: API.Gateway
+            folder: API.Gateway/API.Gateway
+            image_name: api.gateway
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+        
+      - name: 🔐 Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: 🧾 Show Dockerfile used
+        run: cat ./${{ matrix.folder }}/Dockerfile || echo "Dockerfile not found"
+
+
+      - name: 🐳 Build and Push ${{ matrix.service }} Docker image
+        run: |         
+          docker build \
+          --no-cache \
+          -f ./${{ matrix.folder }}/Dockerfile \
+          -t ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release \
+          ./${{ matrix.folder }}
+          docker push ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}:release

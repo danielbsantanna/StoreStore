@@ -78,7 +78,7 @@ After cloning the repository you can choose which version you will run
     docker-compose -f docker-compose-prod.yml up
 ```
 
-After that you acess the GUI: `http://localhost:3000`
+After that you can access the GUI: `http://localhost:3000`
 
 ## 🧾 Final Result
 <div align="center">
